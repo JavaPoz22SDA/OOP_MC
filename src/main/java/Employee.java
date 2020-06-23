@@ -1,4 +1,6 @@
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
 
     private String name;
     private String surname;
@@ -78,14 +80,17 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "name ='" + name + '\'' +
-                ", surname ='" + surname + '\'' +
-                ", sex =" + sex +
-                ", numberOfDivision =" + numberOfDivision +
-                ", salary =" + salary +
-                ", age =" + age +
-                ", kids =" + kids +
-                ", maritalStatus =" + maritalStatus;
+        return "name = " + name + '\'' +
+                ", surname = '" + surname + '\'' +
+                ", sex = " + sex +
+                ", numberOfDivision = " + numberOfDivision +
+                ", salary = " + salary +
+                ", age = " + age +
+                ", kids = " + kids +
+                ", maritalStatus = " + maritalStatus;
+    }
+    public String toStringToFile(){
+        return name + "," + surname + "," + sex + "," + numberOfDivision + "," + salary + "," + age + "," + kids + "," + maritalStatus;
     }
 
     public String displayNameSalary() {

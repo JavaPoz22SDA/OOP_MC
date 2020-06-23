@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListofEmployee {
+public class ListofEmployee implements Serializable {
     private Employee[] listOfEmployee;
     private int numberOfEmployee;
     private int maxNumberOfEmployee;
@@ -99,6 +100,16 @@ public class ListofEmployee {
         System.out.println("Najwyższa pensja wśród: \n" + "mężczyzn: " + man + "zł \n" + "kobiet: " + woman + "zł. \n");
     }
 
+    public int employee(Sex sex) {
+        int number = 0;
+        for (int i = 0; i < numberOfEmployee; i++) {
+            if (listOfEmployee[i].getSex() == sex) {
+                number++;
+            }
+        }
+        return number;
+    }
+
     public int employee(Sex sex, List<Employee> list) {
         int number = 0;
         for (int i = 0; i < list.size(); i++) {
@@ -156,6 +167,19 @@ public class ListofEmployee {
             float newSalary = listOfEmployee[i].rise(percent);
             listOfEmployee[i].setSalary(newSalary);
         }
+    }
+    public float riseSalaryByValue (float value){
+        for (int i = 0; i < numberOfEmployee; i++){
+            float newSalary = listOfEmployee[i].getSalary() + value;
+            listOfEmployee[i].setSalary(newSalary);
+        }
+        int numberOfWomen = employee(Sex.K);
+        int numberOfMan = employee(Sex.M);
+        int allEmployee = numberOfMan + numberOfWomen;
+        float menToWomen = (numberOfWomen * value) / (numberOfMan * value);
+        System.out.println("Suma podwyżek:" + allEmployee * value);
+        System.out.println("Stosunek sumy podwyżek dla kobiet do sumy podwyżek dla mężczyzn wynosi: " + menToWomen);
+        return menToWomen;
     }
 }
 

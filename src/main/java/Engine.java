@@ -4,14 +4,19 @@ public class Engine {
     Scanner scanner = new Scanner(System.in);
     Menu menu = new Menu();
     CustomerService customerService = new CustomerService();
+    String filePath = "baza.dat";
+    ListofEmployee listofEmployee;
+    String textFilePath = "lista pracowników";
 
-    public void start(ListofEmployee listofEmployee) {
+    public void start() {
+        listofEmployee = CustomerService.readListOfEmployee(filePath);
         boolean flag = false;
         while (!flag) {
             menu.mainMenu();
             int choice = choice();
             switch (choice) {
                 case 0:
+                    CustomerService.saveListOfEmployee(filePath,listofEmployee);
                     System.exit(0);
                     flag = true;
                     break;
@@ -38,10 +43,26 @@ public class Engine {
                     Employee employee1 = customerService.employeeChoice(listofEmployee);
                     startEditMenu(employee1);
                     break;
+
                 case 6:
-                    startMenu1(listofEmployee);
+                    startMenu1();
+                    break;
+                case 7:
+                    customerService.eksportListofEmployeeToFile(listofEmployee,textFilePath);
+                    startMenu2();
+                    break;
+                case 8:
+                    System.out.println("Program wspomagający organizację w firmie.");
+                    System.out.println("Autor: Małgorzata Cholewa");
+                    break;
+                case 9:
+                    System.out.println("Podaj własną nazwę pliku.");
+                    filePath = scanner.nextLine();
                     break;
 
+                default:
+                    System.out.println("Nie ma takiego punktu.");
+                    break;
             }
 
         }
@@ -52,7 +73,7 @@ public class Engine {
         int number = 0;
         while (!flag) {
             String choice = scanner.nextLine();
-            if (!choice.matches("[0-8]")) {
+            if (!choice.matches("[0-9]")) {
                 System.out.println("Nie ma takiego punktu.");
             } else {
                 flag = true;
@@ -106,7 +127,7 @@ public class Engine {
             }
         }
     }
-    public void startMenu1(ListofEmployee listofEmployee) {
+    public void startMenu1() {
         boolean flag = false;
         while (!flag) {
             menu.extraFunction();
@@ -134,11 +155,59 @@ public class Engine {
                 case 5:
                     System.out.println("Stosunek średniej płacy kobiet do średniej płacy mężczyzn wynosi: " + listofEmployee.menToWomen());
                     break;
+
                 case 6:
                     float procent = customerService.checkDataFloat("Podaj procent o jaki chcesz zwiększyć pensje (wartość wprowadź w systemie dziesiętnym np 5% = 0.05.");
                     listofEmployee.riseSalary(procent);
                     break;
 
+                case 7:
+                    float value = customerService.checkDataFloat("Podaj wartość o jaką chcesz zwiększyć pensję wszystkim pracownikom.");
+                    listofEmployee.riseSalaryByValue(value);
+                    break;
+
+                case 8:
+                    boolean ascending = customerService.checkDataBoolean("Wybierz 1 jeżeli chcesz posortować rosnąco, a 0 jeżeli malejąco.");
+                    customerService.sortTheFileName(listofEmployee,ascending,filePath);
+                    listofEmployee = CustomerService.readListOfEmployee(filePath);
+                    break;
+
+                case 9:
+                    boolean ascending2 = customerService.checkDataBoolean("Wybierz 1 jeżeli chcesz posortować rosnąco, a 0 jeżeli malejąco.");
+                    customerService.sortTheFileSalary(listofEmployee,ascending2,filePath);
+                    listofEmployee = CustomerService.readListOfEmployee(filePath);
+                    break;
+
+                default:
+                    System.out.println("Nie ma takiego punktu.");
+                    break;
+            }
+        }
+    }
+    public void startMenu2() {
+        boolean flag = false;
+        while (!flag) {
+            menu.extraFunction7();
+            int choice = choice();
+            switch (choice) {
+                case 0:
+                    flag = true;
+                    break;
+                case 1:
+                    customerService.theLongestSurname(textFilePath);
+                    break;
+                case 2:
+                    customerService.avgAgePeopleWithKids(textFilePath);
+                    break;
+                case 3:
+                    customerService.codingOfSurname(textFilePath);
+                    break;
+                case 4:
+                    customerService.saveToHTML(textFilePath,"pracownicy.html");
+                    break;
+                default:
+                    System.out.println("Nie ma takiego punktu.");
+                    break;
             }
         }
     }
